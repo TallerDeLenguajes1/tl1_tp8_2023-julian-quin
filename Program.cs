@@ -9,12 +9,13 @@ internal class Program
         "reponer fiambres","limpiar cajas", "Reponer cajas","cambiar lacteos", "etiquetar promociones"
         ," cambiar focos ","cambiar letreros" , "nada ahre"};
         int opcion = 1;
-        string? textNum = " ", busquedaDescripcion = " ";
+        string? textNum = " ", busquedaDescripcion = " ", nombreApellido;
         int cantPendientes = 10;
         int cantRealizadas = 0;
         Tarea Tarea = new Tarea();
         cargarTareas(pendientes, cantPendientes);
-
+        Console.WriteLine("Nombre y apellido");
+        nombreApellido = Console.ReadLine();
         do
         {
             Console.WriteLine("************* DISTRIBUIDORA **************\n");
@@ -25,6 +26,7 @@ internal class Program
             Console.WriteLine("******************************************\n");
             textNum = Console.ReadLine();
             int.TryParse(textNum, out opcion);
+
 
             switch (opcion)
             {
@@ -56,6 +58,8 @@ internal class Program
             }
 
         } while (opcion != 4);
+
+        GuardarHotasTxt(DeterminarHoras(realizadas),nombreApellido);
 
 
 
@@ -138,6 +142,29 @@ internal class Program
 
             return Retorno;
         }
+
+        int DeterminarHoras (List<Tarea> tareas)
+        {
+            int Totalhoras=0;
+            foreach (var tarea in tareas)
+            {
+                Totalhoras += tarea.Duracion;
+            }
+            Totalhoras = Totalhoras/60;
+            return Totalhoras;
+        }
+
+        void GuardarHotasTxt (int horasTrabajadas, string nombre)
+        {
+            string archivoHoras = "horas.txt";
+            StreamWriter instanciaTxt = File.AppendText(archivoHoras); //"instancia.txt" es la instancia de StreamWriter que se utilizará para escribir en el archivo "horas.txt"
+            string escritura = $"Empleade: {nombre}";
+            string Escritur2 = $"Horas trabajades: {horasTrabajadas}";
+            instanciaTxt.WriteLine(escritura);
+            instanciaTxt.WriteLine(Escritur2);
+            instanciaTxt.Close();
+        }
+
 
     }
 }
